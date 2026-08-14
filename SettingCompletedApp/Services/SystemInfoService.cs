@@ -2,6 +2,10 @@
 using System.Net;
 using System.Net.Sockets;
 using SettingCompletedApp.Models;
+using System.Net.NetworkInformation;
+using System.Diagnostics;
+using SettingCompletedApp.Models;
+using System.Text.Json;
 
 namespace SettingCompletedApp.Services;
 
@@ -18,7 +22,11 @@ public class SystemInfoService
             DomainName = Environment.UserDomainName,
             LogonUser = $"{Environment.UserDomainName}\\{Environment.UserName}",
             CpuName = GetCpuName(),
-            MemorySize = GetTotalMemory()
+            MemorySize = GetTotalMemory(),
+            Manufacturer = GetManufacturer(),
+            ModelName = GetModelName(),
+            BitLockerStatus = GetBitLockerStatus(),
+            NetworkAdapters = GetNetworkAdapters()
         };
     }
 
@@ -89,5 +97,103 @@ public class SystemInfoService
         }
 
         return "取得失敗";
+    }
+
+    private string GetManufacturer()
+    {
+        try
+        {
+            using var searcher =
+                new ManagementObjectSearcher(
+                    "SELECT Manufacturer FROM Win32_ComputerSystem");
+
+            foreach (ManagementObject obj in searcher.Get())
+            {
+                return obj["Manufacturer"]?.ToString() ?? "";
+            }
+        }
+        catch { }
+
+        return "取得失敗";
+    }
+
+    private string GetModelName()
+    {
+        try
+        {
+            using var searcher =
+                new ManagementObjectSearcher(
+                    "SELECT Model FROM Win32_ComputerSystem");
+
+            foreach (ManagementObject obj in searcher.Get())
+            {
+                return obj["Model"]?.ToString() ?? "";
+            }
+        }
+        catch { }
+
+        return "取得失敗";
+    }
+
+    private List<NetworkAdapterInfo> GetNetworkAdapters()
+    {
+        List<NetworkAdapterInfo> adapters = new();
+
+        foreach (var nic in NetworkInterface.GetAllNetworkInterfaces())
+        {
+            var info = new NetworkAdapterInfo
+            {
+                Name = nic.Name,
+                Description = nic.Description,
+                MacAddress = nic.GetPhysicalAddress().ToString()
+            };
+
+            foreach (UnicastIPAddressInformation ip
+                     in nic.GetIPProperties().UnicastAddresses)
+            {
+                info.IpAddresses.Add(ip.Address.ToString());
+            }
+
+            adapters.Add(info);
+        }
+
+        return adapters;
+    }
+
+    private string GetBitLockerStatus()
+    {
+        try
+        {
+            ProcessStartInfo psi = new()
+            {
+                FileName = "powershell.exe",
+
+                Arguments =
+                    "-NoProfile " +
+                    "\"Get-BitLockerVolume | " +
+                    "Select MountPoint,VolumeStatus,ProtectionStatus | " +
+                    "Format-Table -HideTableHeaders\"",
+
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using Process process =
+                Process.Start(psi)!;
+
+            string output =
+                process.StandardOutput.ReadToEnd();
+
+            process.WaitForExit();
+
+            return output.Trim();
+        }
+        catch (Exception ex)
+        {
+            return $"取得失敗 : {ex.Message}";
+        }
     }
 }

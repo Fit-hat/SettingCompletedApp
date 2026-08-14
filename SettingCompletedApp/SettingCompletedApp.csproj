@@ -6,8 +6,13 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyTitle>SettingCompletedApp</AssemblyTitle>
+    <Company>Fit-Hat Solutions</Company>
+    <Product>$(AssemblyName)</Product>
+	<ApplicationIcon>Assets\app.ico</ApplicationIcon>
+	<FileVersion>1.0.1</FileVersion>
   </PropertyGroup>
-
+	
   <ItemGroup>
     <PackageReference Include="System.Management" Version="10.0.11" />
   </ItemGroup>

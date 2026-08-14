@@ -17,4 +17,13 @@ public class SystemInfo
     public string CpuName { get; set; } = "";
 
     public string MemorySize { get; set; } = "";
+
+    public string Manufacturer { get; set; } = "";
+
+    public string ModelName { get; set; } = "";
+
+    public List<NetworkAdapterInfo> NetworkAdapters { get; set; }
+    = new();
+
+    public string BitLockerStatus { get; set; } = "";
 }

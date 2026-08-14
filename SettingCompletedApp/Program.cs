@@ -1,17 +1,35 @@
-namespace SettingCompletedApp
+using SettingCompletedApp.Services;
+using System.Windows.Forms;
+
+namespace SettingCompletedApp;
+
+internal static class Program
 {
-    internal static class Program
+    private const string LogOnlyArgument = "/logonly";
+
+    [STAThread]
+    static void Main(string[] args)
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
+        try
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
+            if (args.Contains(LogOnlyArgument,
+                  StringComparer.OrdinalIgnoreCase))
+            {
+                new LogService().CreateLog();
+                return;
+            }
+
             ApplicationConfiguration.Initialize();
+
             Application.Run(new Form1());
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                ex.ToString(),
+                "エラー",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
     }
 }

@@ -35,7 +35,7 @@ public partial class Form1 : Form
 
     private void SetupForm()
     {
-        Text = "設定完了";
+        Text = "端末証跡ツール";
 
         Width = 800;
         Height = 500;
@@ -185,5 +185,10 @@ public partial class Form1 : Form
         }
 
         return "取得失敗";
+    }
+
+    private void Form1_Load(object sender, EventArgs e)
+    {
+
     }
 }
