@@ -4,6 +4,8 @@ Windows端末のセットアップ完了通知および証跡取得を目的と�
 
 実行時に端末情報を収集し、ログファイルとして保存します。
 
+<img width="391" height="245" alt="image" src="https://github.com/user-attachments/assets/32f1a5af-3b26-4d8d-88b2-b770f323540f" />
+
 ---
 
 # 機能
