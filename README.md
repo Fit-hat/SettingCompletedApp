@@ -177,9 +177,3 @@ SettingCompletedApp
 ├─ Program.cs
 └─ SettingCompletedApp.csproj
 ```
-
----
-
-# ライセンス
-
-Copyright © Fit-Hat Solutions
