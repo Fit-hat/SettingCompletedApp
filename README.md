@@ -152,16 +152,6 @@ SettingCompletedApp.exe /logonly
 
 ---
 
-# 発行設定
-
-- Release
-- net10.0-windows
-- Self Contained
-- Single File
-- win-x64
-
----
-
 # プロジェクト構成
 
 ```text
@@ -187,37 +177,6 @@ SettingCompletedApp
 ├─ Program.cs
 └─ SettingCompletedApp.csproj
 ```
-
----
-
-# 今後の実装候補
-
-## セキュリティ
-
-- TPM状態
-- Secure Boot状態
-- Defender状態
-- Windowsライセンス認証状態
-- ローカル管理者一覧
-
-## ハードウェア
-
-- BIOSシリアル番号
-- BIOSバージョン
-- ディスク容量
-- バッテリー情報
-
-## ネットワーク
-
-- DNSサーバー
-- デフォルトゲートウェイ
-- VPN情報
-
-## Microsoft 365
-
-- OneDrive状態
-- Teamsインストール状況
-- Officeバージョン
 
 ---
 
